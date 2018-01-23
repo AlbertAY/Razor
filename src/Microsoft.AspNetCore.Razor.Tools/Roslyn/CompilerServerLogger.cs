@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CommandLine
     internal class CompilerServerLogger
     {
         // Environment variable, if set, to enable logging and set the file to log to.
-        private const string environmentVariable = "RoslynCommandLineLogFile";
+        private const string environmentVariable = "RazorBuildServerCommandLineLogFile";
 
         private static readonly Stream s_loggingStream;
         private static string s_prefix = "---";
