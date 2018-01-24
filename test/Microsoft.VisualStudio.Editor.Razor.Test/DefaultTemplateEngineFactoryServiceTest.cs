@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
-                    RazorLanguageVersion.Version2_0,
+                    RazorLanguageVersion.Version_2_0,
                     ProjectExtensibilityConfigurationKind.ApproximateMatch,
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Mvc.Razor", new Version("2.0.0.0"))),
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("2.0.0.0")))),
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
-                    RazorLanguageVersion.Version1_1,
+                    RazorLanguageVersion.Version_1_1,
                     ProjectExtensibilityConfigurationKind.ApproximateMatch,
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Mvc.Razor", new Version("1.1.3.0"))),
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.1.3.0")))),
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
-                    RazorLanguageVersion.Version1_0,
+                    RazorLanguageVersion.Version_1_0,
                     ProjectExtensibilityConfigurationKind.ApproximateMatch,
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Mvc.Razor", new Version("1.0.0.0"))),
                     new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.0.0.0")))),

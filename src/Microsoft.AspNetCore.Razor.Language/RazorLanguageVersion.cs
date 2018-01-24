@@ -7,15 +7,15 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     public sealed class RazorLanguageVersion
     {
-        public static readonly RazorLanguageVersion Version1_0 = new RazorLanguageVersion(1, 0);
+        public static readonly RazorLanguageVersion Version_1_0 = new RazorLanguageVersion(1, 0);
 
-        public static readonly RazorLanguageVersion Version1_1 = new RazorLanguageVersion(1, 1);
+        public static readonly RazorLanguageVersion Version_1_1 = new RazorLanguageVersion(1, 1);
 
-        public static readonly RazorLanguageVersion Version2_0 = new RazorLanguageVersion(2, 0);
+        public static readonly RazorLanguageVersion Version_2_0 = new RazorLanguageVersion(2, 0);
 
-        public static readonly RazorLanguageVersion Version2_1 = new RazorLanguageVersion(2, 1);
+        public static readonly RazorLanguageVersion Version_2_1 = new RazorLanguageVersion(2, 1);
 
-        public static readonly RazorLanguageVersion Latest = Version2_1;
+        public static readonly RazorLanguageVersion Latest = Version_2_1;
 
         // Don't want anyone else constructing language versions.
         private RazorLanguageVersion(int major, int minor)

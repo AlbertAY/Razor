@@ -15,10 +15,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 return new TheoryData<AssemblyIdentity, RazorLanguageVersion>
                 {
-                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.0.0.0")), RazorLanguageVersion.Version1_0 },
-                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.1.0.0")), RazorLanguageVersion.Version1_1 },
-                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("2.0.0.0")), RazorLanguageVersion.Version2_0 },
-                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("2.1.0.0")), RazorLanguageVersion.Version2_1 },
+                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.0.0.0")), RazorLanguageVersion.Version_1_0 },
+                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("1.1.0.0")), RazorLanguageVersion.Version_1_1 },
+                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("2.0.0.0")), RazorLanguageVersion.Version_2_0 },
+                    { new AssemblyIdentity("Microsoft.AspNetCore.Razor", new Version("2.1.0.0")), RazorLanguageVersion.Version_2_1 },
                 };
             }
         }
@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var languageVersion = DefaultProjectExtensibilityConfigurationFactory.GetLanguageVersion(assemblyIdentity);
 
             // Assert
-            Assert.Same(RazorLanguageVersion.Version1_1, languageVersion);
+            Assert.Same(RazorLanguageVersion.Version_1_1, languageVersion);
         }
 
         [Fact]

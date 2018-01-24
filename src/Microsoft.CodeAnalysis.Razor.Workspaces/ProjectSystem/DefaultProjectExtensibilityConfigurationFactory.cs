@@ -112,30 +112,30 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         // Internal for testing
         internal static RazorLanguageVersion GetLanguageVersion(AssemblyIdentity razorAssembly)
         {
-            // This is inferred from the assembly for now, the Razor language version will eventually flow from MSbuild.
+            // This is inferred from the assembly for now, the Razor language version will eventually flow from MSBuild.
 
             var razorAssemblyVersion = razorAssembly.Version;
             if (razorAssemblyVersion.Major == 1)
             {
                 if (razorAssemblyVersion.Minor >= 1)
                 {
-                    return RazorLanguageVersion.Version1_1;
+                    return RazorLanguageVersion.Version_1_1;
                 }
 
-                return RazorLanguageVersion.Version1_0;
+                return RazorLanguageVersion.Version_1_0;
             }
 
             if (razorAssemblyVersion.Major == 2)
             {
                 if (razorAssemblyVersion.Minor >= 1)
                 {
-                    return RazorLanguageVersion.Version2_1;
+                    return RazorLanguageVersion.Version_2_1;
                 }
 
-                return RazorLanguageVersion.Version2_0;
+                return RazorLanguageVersion.Version_2_0;
             }
 
-            // Couldn't determine version based off of configuration, fallback to latest.
+            // Couldn't determine version based off of assembly, fallback to latest.
             return RazorLanguageVersion.Latest;
         }
     }

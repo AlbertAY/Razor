@@ -9,7 +9,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             var allowMinimizedBooleanTagHelperAttributes = false;
 
-            if (version == RazorLanguageVersion.Version2_1)
+            if (version == RazorLanguageVersion.Version_2_1)
             {
                 allowMinimizedBooleanTagHelperAttributes = true;
             }

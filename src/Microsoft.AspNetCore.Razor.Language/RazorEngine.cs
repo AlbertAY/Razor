@@ -15,39 +15,35 @@ namespace Microsoft.AspNetCore.Razor.Language
             return Create(configure: null);
         }
 
-        public static RazorEngine Create(Action<IRazorEngineBuilder> configure) => Create(RazorLanguageVersion.Latest, configure);
-
-        public static RazorEngine Create(RazorLanguageVersion version, Action<IRazorEngineBuilder> configure)
-        {
-            if (version == null)
-            {
-                throw new ArgumentNullException(nameof(version));
-            }
-
-            var builder = new DefaultRazorEngineBuilder(designTime: false);
-            AddDefaults(builder);
-            AddRuntimeDefaults(RazorLanguageVersion.Latest, builder);
-            configure?.Invoke(builder);
-            return builder.Build();
-        }
+        public static RazorEngine Create(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.DefaultRuntime, configure);
 
         public static RazorEngine CreateDesignTime()
         {
             return CreateDesignTime(configure: null);
         }
 
-        public static RazorEngine CreateDesignTime(Action<IRazorEngineBuilder> configure) => CreateDesignTime(RazorLanguageVersion.Latest, configure);
+        public static RazorEngine CreateDesignTime(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.DefaultDesignTime, configure);
 
-        public static RazorEngine CreateDesignTime(RazorLanguageVersion version, Action<IRazorEngineBuilder> configure)
+        // Internal since RazorEngine APIs are going to be obsolete.
+        internal static RazorEngine CreateCore(RazorConfiguration configuration, Action<IRazorEngineBuilder> configure)
         {
-            if (version == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(version));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            var builder = new DefaultRazorEngineBuilder(designTime: true);
+            var builder = new DefaultRazorEngineBuilder(configuration.DesignTime);
             AddDefaults(builder);
-            AddDesignTimeDefaults(version, builder);
+
+            if (configuration.DesignTime)
+            {
+                AddDesignTimeDefaults(configuration, builder);
+            }
+            else
+            {
+                AddRuntimeDefaults(configuration, builder);
+            }
+
             configure?.Invoke(builder);
             return builder.Build();
         }
@@ -112,10 +108,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             builder.Features.Add(configurationFeature);
         }
 
-        internal static void AddRuntimeDefaults(RazorLanguageVersion languageVersion, IRazorEngineBuilder builder)
+        internal static void AddRuntimeDefaults(RazorConfiguration configuration, IRazorEngineBuilder builder)
         {
             // Configure options
-            builder.Features.Add(new DefaultRazorParserOptionsFeature(designTime: false, version: languageVersion));
+            builder.Features.Add(new DefaultRazorParserOptionsFeature(designTime: false, version: configuration.LanguageVersion));
             builder.Features.Add(new DefaultRazorCodeGenerationOptionsFeature(designTime: false));
 
             // Intermediate Node Passes
@@ -126,10 +122,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             builder.AddTargetExtension(new PreallocatedAttributeTargetExtension());
         }
 
-        internal static void AddDesignTimeDefaults(RazorLanguageVersion languageVersion, IRazorEngineBuilder builder)
+        internal static void AddDesignTimeDefaults(RazorConfiguration configuration, IRazorEngineBuilder builder)
         {
             // Configure options
-            builder.Features.Add(new DefaultRazorParserOptionsFeature(designTime: true, version: languageVersion));
+            builder.Features.Add(new DefaultRazorParserOptionsFeature(designTime: true, version: configuration.LanguageVersion));
             builder.Features.Add(new DefaultRazorCodeGenerationOptionsFeature(designTime: true));
             builder.Features.Add(new SuppressChecksumOptionsFeature());
 

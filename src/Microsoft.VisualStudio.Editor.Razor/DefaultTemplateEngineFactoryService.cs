@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
     internal class DefaultTemplateEngineFactoryService : RazorTemplateEngineFactoryService
     {
         private readonly static MvcExtensibilityConfiguration DefaultConfiguration = new MvcExtensibilityConfiguration(
-            RazorLanguageVersion.Version2_0,
+            RazorLanguageVersion.Version_2_0,
             ProjectExtensibilityConfigurationKind.Fallback,
             new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Razor.Language", new Version("2.0.0.0"))),
             new ProjectExtensibilityAssembly(new AssemblyIdentity("Microsoft.AspNetCore.Mvc.Razor", new Version("2.0.0.0"))));
@@ -43,11 +43,12 @@ namespace Microsoft.VisualStudio.Editor.Razor
             var project = FindProject(projectPath);
             var configuration = (project?.Configuration as MvcExtensibilityConfiguration) ?? DefaultConfiguration;
             var razorLanguageVersion = configuration.RazorLanguageVersion;
+            var razorConfiguration = new RazorConfiguration(razorLanguageVersion, designTime: true);
 
             RazorEngine engine;
             if (razorLanguageVersion.Major == 1)
             {
-                engine = RazorEngine.CreateDesignTime(razorLanguageVersion, b =>
+                engine = RazorEngine.CreateCore(razorConfiguration, b =>
                 {
                     configure?.Invoke(b);
 
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             }
             else
             {
-                engine = RazorEngine.CreateDesignTime(razorLanguageVersion, b =>
+                engine = RazorEngine.CreateCore(razorConfiguration, b =>
                 {
                     configure?.Invoke(b);
 
