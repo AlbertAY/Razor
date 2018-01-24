@@ -17,22 +17,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 builder.Description = Resources.SectionDirective_Description;
             });
 
-        public static void Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            builder.AddDirective(Directive);
-            builder.Features.Add(new SectionDirectivePass());
-            builder.AddTargetExtension(new SectionTargetExtension());
-        }
-
         public static void Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
@@ -40,13 +24,23 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
+            builder.AddDirective(Directive);
+            builder.Features.Add(new SectionDirectivePass());
+            builder.AddTargetExtension(new SectionTargetExtension());
+        }
+
+        #region Obsolete
+        public static void Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
 
             builder.AddDirective(Directive);
             builder.Features.Add(new SectionDirectivePass());
             builder.AddTargetExtension(new SectionTargetExtension());
         }
+        #endregion
     }
 }

@@ -9,39 +9,6 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
 {
     public static class RazorExtensions
     {
-        public static void Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            EnsureDesignTime(builder);
-
-            InjectDirective.Register(builder);
-            ModelDirective.Register(builder);
-
-            FunctionsDirective.Register(builder);
-            InheritsDirective.Register(builder);
-
-            // Register section directive with the 1.x compatible target extension.
-            builder.AddDirective(SectionDirective.Directive);
-            builder.Features.Add(new SectionDirectivePass());
-            builder.AddTargetExtension(new LegacySectionTargetExtension());
-
-            builder.AddTargetExtension(new TemplateTargetExtension()
-            {
-                TemplateTypeName = "global::Microsoft.AspNetCore.Mvc.Razor.HelperResult",
-            });
-
-            builder.Features.Add(new ModelExpressionPass());
-            builder.Features.Add(new MvcViewDocumentClassifierPass());
-        }
-
         public static void Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
@@ -49,13 +16,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
-
             EnsureDesignTime(builder);
 
-            // RazorEngine features
             InjectDirective.Register(builder);
             ModelDirective.Register(builder);
 
@@ -75,25 +37,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             builder.Features.Add(new ModelExpressionPass());
             builder.Features.Add(new MvcViewDocumentClassifierPass());
 
-            // RazorProjectEngine features
             builder.SetImportFeature(new DefaultMvcImportFeature());
-        }
-
-        public static void RegisterViewComponentTagHelpers(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            EnsureDesignTime(builder);
-
-            builder.Features.Add(new ViewComponentTagHelperPass());
-            builder.AddTargetExtension(new ViewComponentTagHelperTargetExtension());
         }
 
         public static void RegisterViewComponentTagHelpers(RazorProjectEngineBuilder builder)
@@ -103,9 +47,58 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
+            EnsureDesignTime(builder);
+
+            builder.Features.Add(new ViewComponentTagHelperPass());
+            builder.AddTargetExtension(new ViewComponentTagHelperTargetExtension());
+        }
+
+        private static void EnsureDesignTime(RazorProjectEngineBuilder builder)
+        {
+            if (builder.DesignTime)
+            {
+                return;
+            }
+
+            throw new NotSupportedException(Resources.RuntimeCodeGenerationNotSupported);
+        }
+
+        #region Obsolete
+        public static void Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            EnsureDesignTime(builder);
+
+            InjectDirective.Register(builder);
+            ModelDirective.Register(builder);
+
+            FunctionsDirective.Register(builder);
+            InheritsDirective.Register(builder);
+
+            // Register section directive with the 1.x compatible target extension.
+            builder.AddDirective(SectionDirective.Directive);
+            builder.Features.Add(new SectionDirectivePass());
+            builder.AddTargetExtension(new LegacySectionTargetExtension());
+
+            builder.AddTargetExtension(new TemplateTargetExtension()
+            {
+                TemplateTypeName = "global::Microsoft.AspNetCore.Mvc.Razor.HelperResult",
+            });
+
+            builder.Features.Add(new ModelExpressionPass());
+            builder.Features.Add(new MvcViewDocumentClassifierPass());
+        }
+
+        public static void RegisterViewComponentTagHelpers(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
 
             EnsureDesignTime(builder);
 
@@ -122,15 +115,6 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
 
             throw new NotSupportedException(Resources.RuntimeCodeGenerationNotSupported);
         }
-
-        private static void EnsureDesignTime(RazorProjectEngineBuilder builder)
-        {
-            if (builder.DesignTime)
-            {
-                return;
-            }
-
-            throw new NotSupportedException(Resources.RuntimeCodeGenerationNotSupported);
-        }
+        #endregion
     }
 }

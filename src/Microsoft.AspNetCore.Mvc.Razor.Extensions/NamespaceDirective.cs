@@ -26,31 +26,12 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 builder.Description = Resources.NamespaceDirective_Description;
             });
 
-        public static void Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            builder.AddDirective(Directive);
-            builder.Features.Add(new Pass());
-        }
-
         public static void Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException();
             }
-
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
 
             builder.AddDirective(Directive);
             builder.Features.Add(new Pass());
@@ -205,5 +186,18 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 base.VisitDirective(node);
             }
         }
+
+        #region Obsolete
+        public static void Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            builder.AddDirective(Directive);
+            builder.Features.Add(new Pass());
+        }
+        #endregion
     }
 }

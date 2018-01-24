@@ -9,45 +9,6 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 {
     public static class RazorExtensions
     {
-        public static void Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            InjectDirective.Register(builder);
-            ModelDirective.Register(builder);
-            NamespaceDirective.Register(builder);
-            PageDirective.Register(builder);
-
-            FunctionsDirective.Register(builder);
-            InheritsDirective.Register(builder);
-            SectionDirective.Register(builder);
-
-            builder.AddTargetExtension(new ViewComponentTagHelperTargetExtension());
-            builder.AddTargetExtension(new TemplateTargetExtension()
-            {
-                TemplateTypeName = "global::Microsoft.AspNetCore.Mvc.Razor.HelperResult",
-            });
-
-            builder.Features.Add(new ModelExpressionPass());
-            builder.Features.Add(new PagesPropertyInjectionPass());
-            builder.Features.Add(new ViewComponentTagHelperPass());
-            builder.Features.Add(new RazorPageDocumentClassifierPass());
-            builder.Features.Add(new MvcViewDocumentClassifierPass());
-
-            if (!builder.DesignTime)
-            {
-                builder.Features.Add(new AssemblyAttributeInjectionPass());
-                builder.Features.Add(new InstrumentationPass());
-            }
-        }
-
         public static void Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
@@ -55,11 +16,6 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
-
-            // RazorEngine features
             InjectDirective.Register(builder);
             ModelDirective.Register(builder);
             NamespaceDirective.Register(builder);
@@ -87,8 +43,44 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 builder.Features.Add(new InstrumentationPass());
             }
 
-            // RazorProjectEngine features
             builder.SetImportFeature(new DefaultMvcImportFeature());
         }
+
+        #region Obsolete
+        public static void Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            InjectDirective.Register(builder);
+            ModelDirective.Register(builder);
+            NamespaceDirective.Register(builder);
+            PageDirective.Register(builder);
+
+            FunctionsDirective.Register(builder);
+            InheritsDirective.Register(builder);
+            SectionDirective.Register(builder);
+
+            builder.AddTargetExtension(new ViewComponentTagHelperTargetExtension());
+            builder.AddTargetExtension(new TemplateTargetExtension()
+            {
+                TemplateTypeName = "global::Microsoft.AspNetCore.Mvc.Razor.HelperResult",
+            });
+
+            builder.Features.Add(new ModelExpressionPass());
+            builder.Features.Add(new PagesPropertyInjectionPass());
+            builder.Features.Add(new ViewComponentTagHelperPass());
+            builder.Features.Add(new RazorPageDocumentClassifierPass());
+            builder.Features.Add(new MvcViewDocumentClassifierPass());
+
+            if (!builder.DesignTime)
+            {
+                builder.Features.Add(new AssemblyAttributeInjectionPass());
+                builder.Features.Add(new InstrumentationPass());
+            }
+        }
+        #endregion
     }
 }

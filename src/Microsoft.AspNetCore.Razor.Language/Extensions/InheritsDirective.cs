@@ -18,21 +18,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 builder.Description = Resources.InheritsDirective_Description;
             });
 
-        public static void Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            builder.AddDirective(Directive);
-            builder.Features.Add(new InheritsDirectivePass());
-        }
-
         public static void Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
@@ -40,12 +25,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
+            builder.AddDirective(Directive);
+            builder.Features.Add(new InheritsDirectivePass());
+        }
+
+        #region Obsolete
+        public static void Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
 
             builder.AddDirective(Directive);
             builder.Features.Add(new InheritsDirectivePass());
         }
+        #endregion
     }
 }

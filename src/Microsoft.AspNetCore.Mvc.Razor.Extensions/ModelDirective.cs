@@ -21,32 +21,12 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 builder.Description = Resources.ModelDirective_Description;
             });
 
-        public static IRazorEngineBuilder Register(IRazorEngineBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            // ---------------------------------------------------------------------------------------------
-            // When updating these registrations also update the RazorProjectEngineBuilder overload as well.
-            // ---------------------------------------------------------------------------------------------
-
-            builder.AddDirective(Directive);
-            builder.Features.Add(new Pass(builder.DesignTime));
-            return builder;
-        }
-
         public static RazorProjectEngineBuilder Register(RazorProjectEngineBuilder builder)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-
-            // ----------------------------------------------------------------------------------------------------------
-            // When updating the RazorEngine specific registrations also update the IRazorEngineBuilder overload as well.
-            // ----------------------------------------------------------------------------------------------------------
 
             builder.AddDirective(Directive);
             builder.Features.Add(new Pass(builder.DesignTime));
@@ -160,5 +140,19 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 }
             }
         }
+
+        #region Obsolete
+        public static IRazorEngineBuilder Register(IRazorEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            builder.AddDirective(Directive);
+            builder.Features.Add(new Pass(builder.DesignTime));
+            return builder;
+        }
+        #endregion
     }
 }
