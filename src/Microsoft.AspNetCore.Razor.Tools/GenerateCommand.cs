@@ -79,7 +79,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
                 b.Features.Add(new StaticTagHelperFeature() { TagHelpers = tagHelpers, });
             });
 
-            var templateEngine = new MvcRazorTemplateEngine(engine, RazorProject.Create(projectDirectory));
+            var templateEngine = new MvcRazorTemplateEngine(engine, RazorProjectFileSystem.Create(projectDirectory));
 
             var sourceItems = GetRazorFiles(projectDirectory, sources);
             var results = GenerateCode(templateEngine, sourceItems);

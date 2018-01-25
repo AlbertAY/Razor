@@ -8,20 +8,16 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    public class RazorProjectTest
+    public class RazorProjectFileSystemTest
     {
-        // NOTE: These tests are here to snapshot the functionality of RazorProject.
-        // Now that we have a RazorProjectFileSystem future tests regarding that class should
-        // be done in the RazorProjectFileSystemTest class.
-
         [Fact]
         public void NormalizeAndEnsureValidPath_DoesNotModifyPath()
         {
             // Arrange
-            var project = new TestRazorProject();
+            var fileSystem = new TestRazorProjectFileSystem();
 
             // Act
-            var path = project.NormalizeAndEnsureValidPath("/Views/Home/Index.cshtml");
+            var path = fileSystem.NormalizeAndEnsureValidPath("/Views/Home/Index.cshtml");
 
             // Assert
             Assert.Equal("/Views/Home/Index.cshtml", path);
@@ -33,10 +29,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void NormalizeAndEnsureValidPath_ThrowsIfPathIsNullOrEmpty(string path)
         {
             // Arrange
-            var project = new TestRazorProject();
+            var fileSystem = new TestRazorProjectFileSystem();
 
             // Act and Assert
-            ExceptionAssert.ThrowsArgumentNullOrEmptyString(() => project.NormalizeAndEnsureValidPath(path), "path");
+            ExceptionAssert.ThrowsArgumentNullOrEmptyString(() => fileSystem.NormalizeAndEnsureValidPath(path), "path");
         }
 
         [Theory]
@@ -46,11 +42,11 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void NormalizeAndEnsureValidPath_ThrowsIfPathDoesNotStartWithForwardSlash(string path)
         {
             // Arrange
-            var project = new TestRazorProject();
+            var fileSystem = new TestRazorProjectFileSystem();
 
             // Act and Assert
             ExceptionAssert.ThrowsArgument(
-                () => project.NormalizeAndEnsureValidPath(path),
+                () => fileSystem.NormalizeAndEnsureValidPath(path),
                 "path",
                 "Path must begin with a forward slash '/'.");
         }
@@ -59,10 +55,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void FindHierarchicalItems_ReturnsEmptySequenceIfPathIsAtRoot()
         {
             // Arrange
-            var project = new TestRazorProject();
+            var fileSystem = new TestRazorProjectFileSystem();
 
             // Act
-            var result = project.FindHierarchicalItems("/", "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems("/", "File.cshtml");
 
             // Assert
             Assert.Empty(result);
@@ -81,10 +77,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem($"/Views/{fileName}"),
                 CreateProjectItem($"/Views/Home/{fileName}")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(path, $"{fileName}");
+            var result = fileSystem.FindHierarchicalItems(path, $"{fileName}");
 
             // Assert
             Assert.Collection(
@@ -103,10 +99,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             {
                 CreateProjectItem("/File.cshtml")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -127,10 +123,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/File.cshtml"),
                 CreateProjectItem("/File.cshtml"),
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -150,10 +146,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             {
                  CreateProjectItem("/File.cshtml")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Empty(result);
@@ -169,10 +165,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/MyArea/File.cshtml"),
                 CreateProjectItem("/File.cshtml")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -216,10 +212,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/MyArea/File.cshtml"),
                 CreateProjectItem("/File.cshtml")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(basePath, path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(basePath, path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -258,10 +254,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/MyArea/File.cshtml"),
                 CreateProjectItem("/File.cshtml")
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(basePath, path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(basePath, path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -290,10 +286,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/MyArea/File.cshtml"),
                 CreateProjectItem("/File.cshtml"),
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(basePath, path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(basePath, path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -316,10 +312,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 CreateProjectItem("/Areas/MyArea/File.cshtml"),
                 CreateProjectItem("/File.cshtml"),
             };
-            var project = new TestRazorProject(items);
+            var fileSystem = new TestRazorProjectFileSystem(items);
 
             // Act
-            var result = project.FindHierarchicalItems(basePath, path, "File.cshtml");
+            var result = fileSystem.FindHierarchicalItems(basePath, path, "File.cshtml");
 
             // Assert
             Assert.Empty(result);

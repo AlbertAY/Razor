@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     }
                 });
 
-                var templateEngine = new Mvc1_X.MvcRazorTemplateEngine(engine, RazorProject.Create(projectPath));
+                var templateEngine = new Mvc1_X.MvcRazorTemplateEngine(engine, RazorProjectFileSystem.Create(projectPath));
                 templateEngine.Options.ImportsFileName = "_ViewImports.cshtml";
                 return templateEngine;
             }
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     MvcLatest.RazorExtensions.Register(b);
                 });
 
-                var templateEngine = new MvcLatest.MvcRazorTemplateEngine(engine, RazorProject.Create(projectPath));
+                var templateEngine = new MvcLatest.MvcRazorTemplateEngine(engine, RazorProjectFileSystem.Create(projectPath));
                 templateEngine.Options.ImportsFileName = "_ViewImports.cshtml";
                 return templateEngine;
             }

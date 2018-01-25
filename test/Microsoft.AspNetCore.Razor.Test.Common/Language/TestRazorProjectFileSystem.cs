@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
@@ -38,5 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             return value;
         }
+        
+        public new string NormalizeAndEnsureValidPath(string path) => base.NormalizeAndEnsureValidPath(path);
     }
 }
