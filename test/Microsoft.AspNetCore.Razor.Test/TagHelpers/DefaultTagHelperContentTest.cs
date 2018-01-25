@@ -830,7 +830,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 writer.Write('l');
                 writer.Write('o');
                 writer.Write('\u200a');
-                writer.Write('É');
+                writer.Write('?');
                 writer.Write('r');
                 writer.Write('i');
                 writer.Write('c');
